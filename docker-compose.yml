@@ -184,9 +184,12 @@ x-common-variables: &common-variables
   MYSQL_PASSWORD: MYSQL_PASSWORD
 
 
-services:
-  web:
+services:    
+  # web_app:
+  #   build:
+  #     context: .
     
+  #   links:
 
   mysql_db:
     image: mysql
@@ -207,21 +210,40 @@ services:
     image: "postgres:latest"
     environment:
       - POSTGRES_PASSWORD=postgres_password
+
+
+
+  # nginx:
+  #   image: mydockerhub/mynginx:latest
+
+  # api_postgres: 
+  #   image: mydockerhub/myapipostgres:latest
+  
+  # client:
+  #   image: mydockerhub/myclient:latest
+
+  # api:
+  #   image: mydockerhub/myapi:latest
+
+
+    
   nginx:
     depends_on:
       - api_postgres
       - client
     restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
+    image: omersajid9/first-docker-app:api_nginx
+    # build:
+    #   dockerfile: Dockerfile
+    #   context: ./nginx
     ports:
       - "3050:80"
 
   api_postgres:
-    build:
-      dockerfile: Dockerfile
-      context: "./server_postgres"
+    # build:
+    #   dockerfile: Dockerfile
+    #   context: "./server_postgres"
+    image: omersajid9/first-docker-app:api_postgres
     volumes:
       - /app/node_modules
       - ./server_postgres:/app
@@ -232,21 +254,23 @@ services:
       - PGPASSWORD=postgres_password
       - PGPORT=5432
   client:
+    image: omersajid9/first-docker-app:client
     stdin_open: true
     environment:
       - CHOKIDAR_USEPOLLING=true
-    build:
-      dockerfile: Dockerfile
-      context: ./client
+    # build:
+    #   dockerfile: Dockerfile
+    #   context: ./client
     volumes:
       - /app/node_modules
       - ./client:/app
 
   api:
     restart: always
-    build:
-      dockerfile: Dockerfile
-      context: "./server"
+    image: omersajid9/first-docker-app:api_mysql
+    # build:
+    #   dockerfile: Dockerfile
+    #   context: "./server"
     depends_on:
       - mysql_db
     volumes:
