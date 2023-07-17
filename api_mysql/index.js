@@ -1,75 +1,6 @@
-// const express = require('express');
-// const mysql = require('mysql2');
-// const cors = require('cors');
-
-// const db = mysql.createPool(
-// {
-//     host: 'mysql_db',
-//     user: 'MYSQL_USER',
-//     password: 'MYSQL_PASSWORD',
-//     database: 'books'
-// });
-
-// const app = express();
-
-// app.use(cors());
-
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
-
-
-// app.get('/', (req, res) =>
-// {
-//     res.send('Hi there');
-// });
-
-// app.get('/get', (req, res) =>
-// {
-//     const selectQuery = "SELECT * FROM books_reviews";
-//     db.query(selectQuery, (err, result) =>
-//     {
-//         res.send(result);
-//     });
-// });
-
-// app.post('/insert', (req, res) =>
-// {
-//     const bookName = req.body.book_Name;
-//     const bookReview = req.body._review;
-//     const insertQuery = "INSERT INTO books_reviews (book_name, book_review) VALUES (?, ?)";
-//     db.query(insertQuery, [bookName, bookReview], (err, result) =>
-//     {
-//         console.log(result);
-//     });
-// });
-
-// app.delete('/delete/:bookId', (req, res) =>
-// {
-//     const bookId = req.params.bookId;
-//     const deleteQuery = "DELETE FROM books_review WHERE id = ?";
-//     console.log("DELETEEEE"+'/api/delete/${id}');
-//     db.query(deleteQuery, bookId, (err, result) =>
-//     {
-//         if (err) console.log(err);
-//     });
-// });
-
-// app.put('/update/:bookId', (req, res) =>
-// {
-//     const bookReview = req.book.reviewUpdate;
-//     const bookId = req.params.bookId;
-//     const updateQuery = "UPDATE books_review SET book_review = ? WHERE id = ?";
-//     db.query(updateQuery, [bookReview, bookId], (err, result) =>
-//     {
-//         if (err) console.log(err);
-//     })
-// })
-
-// app.listen('3001', () => { })
-
 const express = require('express');
 const mysql = require('mysql2');
-// const cors = require('cors');
+const cors = require('cors');
 const app = express();
 
 // Add mysql database connection
@@ -81,7 +12,7 @@ const db = mysql.createPool({
 })
 
 // Enable cors security headers
-// app.use(cors())
+app.use(cors())
 
 // add an express method to parse the POST method
 app.use(express.json())

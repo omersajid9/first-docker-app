@@ -1,5 +1,5 @@
 {
-  "name": "server_postgres",
+  "name": "api_postgres",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

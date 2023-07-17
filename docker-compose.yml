@@ -1,183 +1,4 @@
-# version: '3.8'
-
-# x-common-variables: &common-variables
-#   MYSQL_DATABASE: books
-#   MYSQL_USER: MYSQL_USER
-#   MYSQL_PASSWORD: MYSQL_PASSWORD
-
-# services:
-#   mysql_db:
-#     image: mysql
-#     restart: always
-#     cap_add:
-#       - SYS_NICE
-#     volumes:
-#       - "./sql:/docker-entrypoint-initdb.d"
-#     ports:
-#       - "9906:3306"
-#     environment:
-#       <<: *common-variables
-#       MYSQL_ROOT_PASSWORD: MYSQL_ROOT_PASSWORD
-#       MYSQL_HOST: localhost
-
-#   nginx:
-#     depends_on:
-#       - api
-#       - client
-#     restart: always
-#     build:
-#       dockerfile: Dockerfile
-#       context: ./nginx
-#     ports:
-#       - "3050:80"
-
-#   api:
-#     restart: always
-#     build:
-#       dockerfile: Dockerfile
-#       context: "./server"
-#     depends_on:
-#       - mysql_db
-#     volumes:
-#       - /app/node_modules
-#       - ./server:/app
-#     environment:
-#       <<: *common-variables
-#       MYSQL_HOST_IP: mysql_db
-
-#   client:
-#     restart: always
-#     stdin_open: true
-#     environment:
-#       - CHOKIDAR_USEPOLLING=true
-#     build:
-#       dockerfile: Dockerfile
-#       context: ./client
-#     volumes:
-#       - /app/node_modules
-#       - ./client:/app
-
-#   adminer:
-#       image: adminer:latest
-#       restart: unless-stopped
-#       ports:
-#         - 8000:8080
-#       depends_on:
-#         - mysql_db
-#       environment:
-#         ADMINER_DEFAULT_SERVER: mysql_db
-
-# version: '3.9'
-
-# x-common-variables: &common-variables
-#   MYSQL_DATABASE: books
-#   MYSQL_USER: MYSQL_USER
-#   MYSQL_PASSWORD: MYSQL_PASSWORD
-
-
-# services:
-#   mysql_db:
-#     image: mysql
-#     restart: always
-#     cap_add:
-#       - SYS_NICE
-#     volumes:
-#       - "./sql:/docker-entrypoint-initdb.d"
-#     ports:
-#       - "9906:3306"
-#     environment:
-#       <<: *common-variables
-#       MYSQL_ROOT_PASSWORD: MYSQL_ROOT_PASSWORD
-#       MYSQL_HOST: localhost
-
-#   postgres:
-#     restart: always
-#     image: postgres:alpine
-#     environment:
-#       - POSTGRES_PASSWORD=postgres_password
-
-#   nginx:
-#     depends_on:
-#       - api
-#       - client
-#       - api_postgres
-#     restart: always
-#     build:
-#       dockerfile: Dockerfile
-#       context: ./nginx
-#     ports:
-#       - "3050:80"
-
-#   api:
-#     restart: always
-#     build:
-#       dockerfile: Dockerfile
-#       context: "./server"
-#     depends_on:
-#       - mysql_db
-#     volumes:
-#       - /app/node_modules
-#       - ./server:/app
-#     environment:
-#       <<: *common-variables
-#       MYSQL_HOST_IP: mysql_db
-
-
-  
-#   api_postgres:
-#     restart: always
-#     build:
-#       dockerfile: Dockerfile
-#       context: ./server_postgres
-#     volumes:
-#       - /app/node_modules
-#       - ./server_postgres:/app
-#     environment:
-#       - PGUSER=postgres
-#       - PGHOST=postgres
-#       - PGDATABASE=postgres
-#       - PGPASSWORD=postgres_password
-#       - PGPORT=5432
-
-#     ports:
-#       - "5432:5432"
-
-#   client:
-#     restart: always
-#     stdin_open: true
-#     environment:
-#       - CHOKIDAR_USEPOLLING=true
-#     build:
-#       dockerfile: Dockerfile
-#       context: ./client
-#     volumes:
-#       - /app/node_modules
-#       - ./client:/app
-
-#   pg-admin:
-#     image: dpage/pgadmin4:6
-#     environment:
-#       - PGADMIN_DEFAULT_EMAIL=admin@mail.com
-#       - PGADMIN_DEFAULT_PASSWORD=admin
-#       - PDADMIN_LISTEN_PORT=5050
-
-#     ports:
-#       - "5050:5050"
-
-#   adminer:
-#       image: adminer:latest
-#       restart: unless-stopped
-#       ports:
-#         - 8000:8080
-#       depends_on:
-#         - mysql_db
-#       environment:
-#         ADMINER_DEFAULT_SERVER: mysql_db
-
-
-
-
-version: "3"
+version: "3.9"
 x-common-variables: &common-variables
   MYSQL_DATABASE: books
   MYSQL_USER: MYSQL_USER
@@ -185,19 +6,13 @@ x-common-variables: &common-variables
 
 
 services:    
-  # web_app:
-  #   build:
-  #     context: .
-    
-  #   links:
-
   mysql_db:
     image: mysql
     restart: always
     cap_add:
       - SYS_NICE
     volumes:
-      - "./server/sql:/docker-entrypoint-initdb.d"
+      - "./api_mysql/sql:/docker-entrypoint-initdb.d"
     ports:
       - "9906:3306"
     environment:
@@ -211,71 +26,57 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres_password
 
-
-
-  # nginx:
-  #   image: mydockerhub/mynginx:latest
-
-  # api_postgres: 
-  #   image: mydockerhub/myapipostgres:latest
-  
-  # client:
-  #   image: mydockerhub/myclient:latest
-
-  # api:
-  #   image: mydockerhub/myapi:latest
-
-
-    
   nginx:
     depends_on:
       - api_postgres
       - client
+      - api_mysql
     restart: always
-    image: omersajid9/first-docker-app:api_nginx
-    # build:
-    #   dockerfile: Dockerfile
-    #   context: ./nginx
+    # image: omersajid9/first-docker-app:api_nginx
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
     ports:
       - "3050:80"
 
   api_postgres:
-    # build:
-    #   dockerfile: Dockerfile
-    #   context: "./server_postgres"
-    image: omersajid9/first-docker-app:api_postgres
+    build:
+      dockerfile: Dockerfile
+      context: "./api_postgres"
+    # image: omersajid9/first-docker-app:api_postgres
     volumes:
       - /app/node_modules
-      - ./server_postgres:/app
+      - ./api_postgres:/app
     environment:
       - PGUSER=postgres
       - PGHOST=postgres
       - PGDATABASE=postgres
       - PGPASSWORD=postgres_password
       - PGPORT=5432
+  
   client:
-    image: omersajid9/first-docker-app:client
+    # image: omersajid9/first-docker-app:client
     stdin_open: true
     environment:
       - CHOKIDAR_USEPOLLING=true
-    # build:
-    #   dockerfile: Dockerfile
-    #   context: ./client
+    build:
+      dockerfile: Dockerfile
+      context: ./client
     volumes:
       - /app/node_modules
       - ./client:/app
 
-  api:
+  api_mysql:
     restart: always
-    image: omersajid9/first-docker-app:api_mysql
-    # build:
-    #   dockerfile: Dockerfile
-    #   context: "./server"
+    # image: omersajid9/first-docker-app:api_mysql
+    build:
+      dockerfile: Dockerfile
+      context: "./api_mysql"
     depends_on:
       - mysql_db
     volumes:
       - /app/node_modules
-      - ./server:/app
+      - ./api_mysql:/app
     environment:
       <<: *common-variables
       MYSQL_HOST_IP: mysql_db

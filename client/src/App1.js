@@ -1,75 +1,6 @@
-// import {useCallback, useEffect, useState} from 'react';
-// import axios from 'axios';
-
-
-// const App1 = () =>
-// {
-//     const [values, setValues] = useState([]);
-//     const [value, setValue] = useState('');
-
-//     useEffect(() => 
-//     {
-//         getAllNumbers();
-//     }, [])
-
-//     const getAllNumbers = useCallback(async () =>
-//     {
-//         const data = await axios.get('/api_postgres/values/all');
-//         setValues(data.data.rows.map((row) => row.number));
-//     }, [])
-
-//     const saveNumber = useCallback(async (event) =>
-//     {
-//         event.preventDefault();
-//         await axios.post('/api_postgres/values', {
-//             value
-//         })
-//         setValue('');
-//         getAllNumbers();
-//     }, [value, getAllNumbers])
-
-
-//     return (
-//         <div>
-//             <button onClick={getAllNumbers}> Get all buttons </button>
-//             {/* <span>This is another container</span> */}
-//             <div>
-//                 {values.map(value =>
-//                     {
-//                         <div> {value} </div>
-//                     })}
-//             </div>
-//             <form>
-//                 <label>Enter your value: </label>
-//                 <input value={value} onChange={(event)=> setValues(event.target.value)}/>
-//                 <button onSubmit={saveNumber}>submit</button>
-//             </form>
-//         </div>
-//     )
-// }
-
-// export default App1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useCallback, useState, useEffect } from "react";
 import axios from "axios";
 import './App.css';
-import { Button, Container, Card, Row } from 'react-bootstrap'
-
 
 // import "./MainComponent.css";
 
@@ -131,10 +62,10 @@ const App1 = () => {
 
   const card = values.map((val, key) => (
     <React.Fragment key={key}>
-      <div style={{ width: '18rem' }} className="m-2 bg-purple-200 rounded-lg shadow-md max-w-sm">
-        <div className='p-6'>
-          <h2 className='text-2xl font-bold text-gray-800 mb-2'>{val.task}</h2>
-          <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={()=>deleteNumber(val.id)}>Delete</button>
+      <div className="m-2 bg-blue-200 rounded-t-3xl rounded-b-sm shadow-md w-5/12 ">
+        <div className='p-6 overflow-hidden flex justify-between items-center'>
+          <h2 className='text-base text-gray-800 m-2 whitespace-normal'>{val.task}</h2>
+          <button className="bg-red-400 text-sm text-gray-800 px-4 py-2 rounded-full" onClick={()=>deleteNumber(val.id)}>Delete</button>
         </div>
       </div>
     </React.Fragment>
@@ -152,21 +83,21 @@ const App1 = () => {
           placeholder="Enter task"
           onChange={event => {
             setValue(event.target.value);
-          }} className='tracking-widest leading-snug bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5'
+          }} className=' mx-2 tracking-widest leading-snug bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-full focus:outline-blue-500 focus:border-blue-500 p-3.5'
         />
-        <button className="my-2 tracking-widest leading-snug">Submit</button>
+        <button className="mx-2 tracking-widest leading-snug bg-blue-200 p-3.5 rounded-full focus:bg-blue-300 focus:outline-blue-500">Submit</button>
       </form>
 
-      <Container>
+      {/* <Container>
         <Row>{card}</Row>
-      </Container>
+      </Container> */}
+
+      <div className="flex flex-col overflow-y-auto justify-center items-center">
+        {card}
+      </div>
 
 
-      {/* <div className="mb-4">
-        {values.map(value => (
-          <div className="value">{value}</div>
-        ))}
-      </div> */}
+
     </div>
   );
 };
