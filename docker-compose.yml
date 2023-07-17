@@ -32,18 +32,18 @@ services:
       - client
       - api_mysql
     restart: always
-    # image: omersajid9/first-docker-app:api_nginx
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
+    image: omersajid9/first-docker-app:api_nginx
+    # build:
+    #   dockerfile: Dockerfile
+    #   context: ./nginx
     ports:
       - "3050:80"
 
   api_postgres:
-    build:
-      dockerfile: Dockerfile
-      context: "./api_postgres"
-    # image: omersajid9/first-docker-app:api_postgres
+    # build:
+    #   dockerfile: Dockerfile
+    #   context: "./api_postgres"
+    image: omersajid9/first-docker-app:api_postgres
     volumes:
       - /app/node_modules
       - ./api_postgres:/app
@@ -55,23 +55,23 @@ services:
       - PGPORT=5432
   
   client:
-    # image: omersajid9/first-docker-app:client
+    image: omersajid9/first-docker-app:client
     stdin_open: true
     environment:
       - CHOKIDAR_USEPOLLING=true
-    build:
-      dockerfile: Dockerfile
-      context: ./client
+    # build:
+    #   dockerfile: Dockerfile
+    #   context: ./client
     volumes:
       - /app/node_modules
       - ./client:/app
 
   api_mysql:
     restart: always
-    # image: omersajid9/first-docker-app:api_mysql
-    build:
-      dockerfile: Dockerfile
-      context: "./api_mysql"
+    image: omersajid9/first-docker-app:api_mysql
+    # build:
+    #   dockerfile: Dockerfile
+    #   context: "./api_mysql"
     depends_on:
       - mysql_db
     volumes:
