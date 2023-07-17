@@ -1,3 +1,6 @@
+![image](https://github.com/omersajid9/first-docker-app/assets/67452047/04a4dfe6-7acf-4c1e-a5cf-6d529a3c7095)
+
+
 # My Docker Application 
 
 This application runs in a Docker container. Follow the instructions below to install Docker and run the application.
