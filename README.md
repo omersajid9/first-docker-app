@@ -20,18 +20,18 @@ This application runs in a Docker container. Follow the instructions below to in
 
 3. Clone this repository:
    ```
-   git clone https://github.com/username/repo.git
+   git clone https://github.com/omersajid9/first-docker-app.git
     ```
 4. Navigate to the repository directory:
    ```
-   cd repo
+   cd first-docker-app
     ```
 
 ## Usage  
 
 To start the application, run:
    ```
-   docker-compose up
+   docker compose up
   ```
 This will pull the Docker images (if needed), build the containers, and start the application.  
 
